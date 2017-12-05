@@ -19,51 +19,6 @@ constexpr bool kPart1 = false;  // Use true for part 1, false for part 2.
 // memory.
 using Memory = std::vector<std::vector<int>>;
 
-// Converts a coordinate in the spiral system (with 0 in the center) to an index
-// into the simulated memory array.
-size_t ConvertCoord(int coord) {
-  // In order to store things by index in a vector, indexes must be positive.
-  // To achieve this, we interleave positive- and negative-index coordinates:
-  // {0, -1, 1, -2, 2, -3, 3, ...}.
-  coord *= 2;
-  return static_cast<size_t>((coord >= 0) ? coord : (-coord - 1));
-}
-
-// Returns the value at spiral coord (x, y) in |memory|.  If (x, y) has not been
-// written yet, returns 0.
-int Read(const Memory& memory, int x, int y) {
-  // Get the matching memory column for |x|.
-  const size_t column_index = ConvertCoord(x);
-  if (memory.size() <= column_index)
-    return 0;
-  const auto column = memory[column_index];
-
-  // Return the appropriate row from that column.
-  const size_t row_index = ConvertCoord(y);
-  return (column.size() > row_index) ? column[row_index] : 0;
-}
-
-// Writes |value| to spiral coord (x, y) in |memory|.
-void Write(Memory* memory, int x, int y, int value) {
-  // Get the matching memory column for |x|.
-  const size_t column_index = ConvertCoord(x);
-  if (memory->size() <= column_index)
-    memory->resize(column_index + 1);  // Column not yet written.
-  auto& column = (*memory)[column_index];
-
-  // And the matching row within that column.
-  const size_t row_index = ConvertCoord(y);
-  if (column.size() <= row_index)
-    column.resize(row_index + 1);  // Row not yet written.
-
-  // Write the value.  Note that any other slots created by the resize() calls
-  // above will have been value-initialized, which, for ints, means "set to 0".
-  // This is what we want, so that unwritten values will read as 0 whether
-  // they've been allocated (here) or not (and thus handled by bounds-checks in
-  // Read()).
-  column[row_index] = value;
-}
-
 // Returns various useful bits of positioning info within the spiral, given a
 // (zero-based) address.  This is based on treating the spiral as a series of
 // concentric square rings, numbered from 0 (the innermost ring containing only
@@ -112,6 +67,51 @@ int ManhattanDistance(int address) {
   // center of the spiral to the center of the nearest side of the ring, and the
   // offset gives the distance along the side from the center.
   return ring + std::abs(offset);
+}
+
+// Converts a coordinate in the spiral system (with 0 in the center) to an index
+// into the simulated memory array.
+size_t ConvertCoord(int coord) {
+  // In order to store things by index in a vector, indexes must be positive.
+  // To achieve this, we interleave positive- and negative-index coordinates:
+  // {0, -1, 1, -2, 2, -3, 3, ...}.
+  coord *= 2;
+  return static_cast<size_t>((coord >= 0) ? coord : (-coord - 1));
+}
+
+// Returns the value at spiral coord (x, y) in |memory|.  If (x, y) has not been
+// written yet, returns 0.
+int Read(const Memory& memory, int x, int y) {
+  // Get the matching memory column for |x|.
+  const size_t column_index = ConvertCoord(x);
+  if (memory.size() <= column_index)
+    return 0;
+  const auto column = memory[column_index];
+
+  // Return the appropriate row from that column.
+  const size_t row_index = ConvertCoord(y);
+  return (column.size() > row_index) ? column[row_index] : 0;
+}
+
+// Writes |value| to spiral coord (x, y) in |memory|.
+void Write(Memory* memory, int x, int y, int value) {
+  // Get the matching memory column for |x|.
+  const size_t column_index = ConvertCoord(x);
+  if (memory->size() <= column_index)
+    memory->resize(column_index + 1);  // Column not yet written.
+  auto& column = (*memory)[column_index];
+
+  // And the matching row within that column.
+  const size_t row_index = ConvertCoord(y);
+  if (column.size() <= row_index)
+    column.resize(row_index + 1);  // Row not yet written.
+
+  // Write the value.  Note that any other slots created by the resize() calls
+  // above will have been value-initialized, which, for ints, means "set to 0".
+  // This is what we want, so that unwritten values will read as 0 whether
+  // they've been allocated (here) or not (and thus handled by bounds-checks in
+  // Read()).
+  column[row_index] = value;
 }
 
 // Fills memory with appropriate values until one is larger than the input, and
