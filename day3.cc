@@ -130,7 +130,7 @@ int FirstLargerValue(int input) {
     // which side of the ring the address is on.
     //
     // We could instead compute whether to increment or decrement |x| or |y| by
-    // one at each step.  But since GetPositioningIngo() is already O(1), this
+    // one at each step.  But since GetPositioningInfo() is already O(1), this
     // would be more code for very little efficiency gain.
     int ring, offset, pos, side_length;
     std::tie(ring, offset, pos, side_length) = GetPositioningInfo(address);
@@ -156,7 +156,7 @@ int FirstLargerValue(int input) {
 }  // namespace
 
 int main(int argc, char* argv[]) {
-  std::cout << "Input value: ";
+  std::cout << "Enter value: ";
   int input;
   std::cin >> input;
 

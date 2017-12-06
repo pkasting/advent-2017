@@ -46,7 +46,7 @@ size_t CountSteps(std::vector<int> offsets) {
 }  // namespace
 
 int main(int argc, char* argv[]) {
-  std::cout << "Input jump offsets; terminate with ctrl-z alone on a line."
+  std::cout << "Enter jump offsets; terminate with ctrl-z alone on a line."
             << std::endl;
 
   std::cout << "Steps to exit: " << CountSteps(ReadInput()) << std::endl;
