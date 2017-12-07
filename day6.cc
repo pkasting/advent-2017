@@ -63,7 +63,7 @@ int CountCycles(std::vector<int> banks) {
   bool new_config;
   auto Record = [&loop_point, &new_config, &configs_seen, banks, cycles]() {
     std::tie(loop_point, new_config) =
-      configs_seen.insert(std::make_pair(Serialize(banks), cycles));
+      configs_seen.insert({Serialize(banks), cycles});
   };
 
   // Redistribute until we see a repeated configuration.
