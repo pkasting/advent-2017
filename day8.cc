@@ -35,6 +35,7 @@ bool Compare(int a, const std::string& op, int b) {
     return a >= b;
   if (op == ">")
     return a > b;
+  return false;  // Shouldn't reach here with well-formed input.
 }
 
 // Executes the conditional instruction in |tokens| using the register file
@@ -43,11 +44,11 @@ bool Compare(int a, const std::string& op, int b) {
 // register file, val1 and val2 are ints, and OP is a binary opcode.  Returns
 // the value written to r1, or 0 if the instruction is not executed.
 int Execute(const std::vector<std::string> tokens,
-            std::unordered_map<std::string, int> registers) {
-  if (!Compare(registers[tokens[4]], tokens[5], std::stoi(tokens[6])))
+            std::unordered_map<std::string, int>* registers) {
+  if (!Compare((*registers)[tokens[4]], tokens[5], std::stoi(tokens[6])))
     return 0;
 
-  int& reg = registers[tokens[0]];
+  int& reg = (*registers)[tokens[0]];
   const int increment = std::stoi(tokens[2]);
   reg += (tokens[1] == "dec") ? -increment : increment;
   return reg;
@@ -73,7 +74,7 @@ int main(int argc, char* argv[]) {
   int max_value = 0;
   std::unordered_map<std::string, int> registers;
   while (std::getline(std::cin, line))
-    max_value = std::max(max_value, Execute(Tokenize(line), registers));
+    max_value = std::max(max_value, Execute(Tokenize(line), &registers));
 
   // In part 1, print the largest value currently in the register file; in part
   // 2, print the largest value written.
