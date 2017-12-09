@@ -17,13 +17,14 @@
 /* Some test inputs to exercise edge cases:
  * Nodes with only one child:
 
-a (10) -> b, c
-b (7) -> d
-c (72)
-d (50) -> e
-e (3) -> f, g
-f (10)
+a (10) -> b, c, d
+b (72)
+c (7) -> e
+d (72)
+e (50) -> f
+f (3) -> g, h
 g (10)
+h (10)
 
 Desired output: 42
 
