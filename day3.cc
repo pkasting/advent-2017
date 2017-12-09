@@ -58,15 +58,11 @@ int ManhattanDistance(int address) {
   // self-respecting system would use one-indexed memory addressing?
   --address;
 
-  // Find the ring and the offset along the side of the ring for this address.
-  int ring, offset;
-  std::tie(ring, offset, std::ignore, std::ignore) =
-      GetPositioningInfo(address);
-
   // Calculate Manhattan distance.  The ring number gives the distance from the
   // center of the spiral to the center of the nearest side of the ring, and the
   // offset gives the distance along the side from the center.
-  return ring + std::abs(offset);
+  auto pos_info = GetPositioningInfo(address);
+  return std::get<0>(pos_info) + std::abs(std::get<1>(pos_info));
 }
 
 // Converts a coordinate in the spiral system (with 0 in the center) to an index
