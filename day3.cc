@@ -5,6 +5,7 @@
 
 #include <array>
 #include <cmath>
+#include <cstddef>
 #include <iostream>
 #include <tuple>
 #include <vector>
@@ -67,38 +68,38 @@ int ManhattanDistance(int address) {
 
 // Converts a coordinate in the spiral system (with 0 in the center) to an index
 // into the simulated memory array.
-size_t ConvertCoord(int coord) {
+std::size_t ConvertCoord(int coord) {
   // In order to store things by index in a vector, indexes must be positive.
   // To achieve this, we interleave positive- and negative-index coordinates:
   // {0, -1, 1, -2, 2, -3, 3, ...}.
   coord *= 2;
-  return static_cast<size_t>((coord >= 0) ? coord : (-coord - 1));
+  return static_cast<std::size_t>((coord >= 0) ? coord : (-coord - 1));
 }
 
 // Returns the value at spiral coord (x, y) in |memory|.  If (x, y) has not been
 // written yet, returns 0.
 int Read(const Memory& memory, int x, int y) {
   // Get the matching memory column for |x|.
-  const size_t column_index = ConvertCoord(x);
+  const std::size_t column_index = ConvertCoord(x);
   if (memory.size() <= column_index)
     return 0;
   const auto column = memory[column_index];
 
   // Return the appropriate row from that column.
-  const size_t row_index = ConvertCoord(y);
+  const std::size_t row_index = ConvertCoord(y);
   return (column.size() > row_index) ? column[row_index] : 0;
 }
 
 // Writes |value| to spiral coord (x, y) in |memory|.
 void Write(Memory* memory, int x, int y, int value) {
   // Get the matching memory column for |x|.
-  const size_t column_index = ConvertCoord(x);
+  const std::size_t column_index = ConvertCoord(x);
   if (memory->size() <= column_index)
     memory->resize(column_index + 1);  // Column not yet written.
   auto& column = (*memory)[column_index];
 
   // And the matching row within that column.
-  const size_t row_index = ConvertCoord(y);
+  const std::size_t row_index = ConvertCoord(y);
   if (column.size() <= row_index)
     column.resize(row_index + 1);  // Row not yet written.
 

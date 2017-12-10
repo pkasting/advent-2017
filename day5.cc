@@ -2,6 +2,7 @@
 // Peter Kasting, Dec. 4, 2017
 
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <iterator>
 #include <string>
@@ -27,14 +28,14 @@ std::vector<int> ReadInput() {
 // current offset, and the offset is modified.  In part 1, the offset is always
 // incremented by one; in part 2, the offset is incremented by 1 if less than 3,
 // or decremented by 1 otherwise.
-size_t CountSteps(std::vector<int> offsets) {
-  size_t steps = 0;
+std::size_t CountSteps(std::vector<int> offsets) {
+  std::size_t steps = 0;
   // We could make |pc| a size_t and eliminate the "positive" check, but this
   // assumes that any jump off the beginning of the list is not so large that it
   // wraps around to a valid list index.  In practice any list that violated
   // that would have to take up an enormous amount of memory, but might as well
   // avoid the issue.
-  for (int pc = 0; (pc >= 0) && (static_cast<size_t>(pc) < offsets.size());
+  for (int pc = 0; (pc >= 0) && (static_cast<std::size_t>(pc) < offsets.size());
        ++steps) {
     int& offset = offsets[pc];
     pc += offset;

@@ -2,6 +2,7 @@
 // Peter Kasting, Dec. 8, 2017
 
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <iterator>
 #include <memory>
@@ -166,7 +167,7 @@ int Node::ReplacementWeight(int expected_weight) const {
   if (unbalanced_subtree_) {
     // We know which subtree is problematic.  Pass it the weight of a different
     // subtree as a known-good reference.
-    const size_t ok = (unbalanced_subtree_ == subtrees_.front()) ? 1 : 0;
+    const std::size_t ok = (unbalanced_subtree_ == subtrees_.front()) ? 1 : 0;
     return unbalanced_subtree_->ReplacementWeight(subtrees_[ok]->total_weight_);
   }
 

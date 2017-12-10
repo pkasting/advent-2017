@@ -1,6 +1,7 @@
 // Advent of Code 2017 day 1 solution
 // Peter Kasting, Dec. 4, 2017
 
+#include <cstddef>
 #include <iostream>
 #include <iterator>
 #include <string>
@@ -27,13 +28,13 @@ std::vector<int> Tokenize(const std::string& input) {
 // around |digits|.
 int SumMatchingDigits(const std::vector<int>& digits) {
   // Compute the increment to the digit we're interested in.
-  const size_t size = digits.size();
-  const size_t increment = kPart1 ? 1 : (size / 2);
+  const std::size_t size = digits.size();
+  const std::size_t increment = kPart1 ? 1 : (size / 2);
 
   // Sum digits that match the one |increment| places away, treating |digits|
   // circularly.
   int sum = 0;
-  for (size_t i = 0; i < size; ++i) {
+  for (std::size_t i = 0; i < size; ++i) {
     const int digit = digits[i];
     if (digit == digits[(i + increment) % size])
       sum += digit;
