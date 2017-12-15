@@ -24,7 +24,7 @@ std::pair<int, int> ParseScanner(const std::string& input) {
 }
 
 // Returns whether a packet beginning at |delay| would be detected by |scanner|.
-bool DetectedByScanner(int delay, const std::pair<int, int>& scanner) {
+bool Detected(int delay, const std::pair<int, int>& scanner) {
   // The period of a scanner is 2 * (range - 1).
   return ((scanner.first + delay) % (2 * (scanner.second - 1))) == 0;
 }
@@ -35,7 +35,7 @@ int GetSeverity(const std::vector<std::pair<int, int>>& scanners, int delay) {
   for (const auto& i : scanners) {
     // The severity of getting detected by any single scanner is its depth times
     // its range.
-    if (DetectedByScanner(delay, i))
+    if (Detected(delay, i))
       severity += i.first * i.second;
   }
   return severity;
@@ -55,7 +55,7 @@ int GetDelay(const std::vector<std::pair<int, int>>& scanners) {
   // for me to see how to apply these.
   int delay = 0;
   while (std::any_of(scanners.begin(), scanners.end(),
-                     std::bind(DetectedByScanner, delay)))
+                     std::bind(Detected, delay, std::placeholders::_1)))
     ++delay;
   return delay;
 }
