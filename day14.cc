@@ -98,11 +98,11 @@ std::vector<std::vector<bool>> ConstructGrid(const std::string& input) {
 
 // Returns the total number of "used squares" (true values) in |grid|.
 std::size_t CountSquares(const std::vector<std::vector<bool>>& grid) {
-  const auto SquaresInRow =
-      [](std::size_t count, const auto& row) {
+  const auto SquaresInRow = [](std::size_t count, const auto& row) {
     return count + std::count(row.cbegin(), row.cend(), true);
   };
-  return std::accumulate(grid.cbegin(), grid.cend(), 0, SquaresInRow);
+  return std::accumulate(grid.cbegin(), grid.cend(), std::size_t(0),
+                         SquaresInRow);
 }
 
 // Returns the neighboring grid coordinates to |coord|.  This is normally the
